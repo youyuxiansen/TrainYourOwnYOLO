@@ -34,19 +34,19 @@ from keras.callbacks import (
     ReduceLROnPlateau,
     EarlyStopping,
 )
-from keras_yolo3.yolo3.model import (
+from .src.keras_yolo3.yolo3.model import (
     preprocess_true_boxes,
     yolo_body,
     tiny_yolo_body,
     yolo_loss,
 )
-from keras_yolo3.yolo3.utils import get_random_data
+from .src.keras_yolo3.yolo3.utils import get_random_data
 from PIL import Image
 from time import time
 import tensorflow.compat.v1 as tf
 import pickle
 
-from Train_Utils import (
+from ..Utils.Train_Utils import (
     get_classes,
     get_anchors,
     create_model,

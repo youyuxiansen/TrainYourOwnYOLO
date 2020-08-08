@@ -98,7 +98,9 @@ def _main(args):
     cfg_parser.read_file(unique_config_file)
 
     print("Creating Keras model.")
-    input_layer = Input(shape=(None, None, 3))
+    # input shape is batch_shape + [in_height, in_width, in_channels]
+    in_channel = 3
+    input_layer = Input(shape=(None, None, in_channel))
     prev_layer = input_layer
     all_layers = []
 
@@ -126,8 +128,11 @@ def _main(args):
             # [bias/beta, [gamma, mean, variance], conv_weights]
             prev_layer_shape = K.int_shape(prev_layer)
 
-            weights_shape = (size, size, prev_layer_shape[-1], filters)
-            darknet_w_shape = (filters, weights_shape[2], size, size)
+            # a filter shape is [filter_height, filter_width, in_channels, out_channels]。for the first layer,
+            # in_channels is 3, out_channels turns to be filter's num
+            weights_shape = (size, size, in_channel, filters)
+            # darknet filter shape like caffe, is [out_channels, in_channels, filter_height, filter_width]
+            darknet_w_shape = (filters, in_channel, size, size)
             weights_size = np.product(weights_shape)
 
             print(
